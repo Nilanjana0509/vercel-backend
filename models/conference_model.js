@@ -49,6 +49,12 @@ const conference=new mongoose.Schema({
     number_of_papers:{
         type:String,
     },
+    plagiarismWebsite:{
+        type:String,
+    },
+    copyrightWebsite:{
+        type:String,
+    },
     tracks: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Track'

@@ -23,9 +23,7 @@ app.use(bodyparser.json());
 
 app.get('/',(req,res)=>{
     const obj={
-        name:'pratanu ghorui',
-        age:24,
-        department:'cse'
+        message:"Welcome to the conference management system"
     }
     res.send(obj);
 })
