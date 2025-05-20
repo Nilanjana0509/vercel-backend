@@ -8,24 +8,17 @@ const { populate } = require('../models/authors_work_model');
 //-------------------------------------
 router.post('/create', async (req, res) => {
   try {
-    // console.log('llllllllllllll');
     const con = req.body;
     const newconference = new Conference(con);
     const conf = await newconference.save();
     res.status(200).json(conf);
-    // Delay the response for 5 seconds
-    // setTimeout(() => {
-     
-    // }, 5000); // 5000 milliseconds = 5 seconds
   } catch (error) {
     console.error("Error creating conference:", error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-
-
- router.get('/fetch/:id',async(req,res)=>{
+router.get('/fetch/:id',async(req,res)=>{
     try {
       const id=req.params.id;
       const con = await Conference.findById(id); 
@@ -39,26 +32,18 @@ router.post('/create', async (req, res) => {
       res.status(500).json({error:"iternal server error"});
     }
   
-  })
-
- 
-  
-
-
+  });
 
 router.get('/getallconference',async(req,res)=>{
  try {
   const conference = await Conference.find().populate({
     path: 'tracks'
-    // populate: {
-    //     path: 'topics'
-    // }
 });
  res.send(conference);
  } catch (error) {
   console.log(error);
  }
-})
+});
 
 router.get('/getconferencebyid/:id',async(req,res)=>{
   try {
@@ -66,7 +51,6 @@ router.get('/getconferencebyid/:id',async(req,res)=>{
     const conference = await Conference.findById(id).populate({
       path: 'tracks',
       populate: [
-          // { path: 'topics', populate: { path: 'author_works' } },
           { path: 'reviewers' }
       ]
   }).populate({
@@ -77,7 +61,7 @@ router.get('/getconferencebyid/:id',async(req,res)=>{
   } catch (error) {
    console.log(error);
   }
- })
+ });
 
  router.get('/conferenceAndTrack/:id', async (req, res) => {
   try {
@@ -101,7 +85,6 @@ router.get('/getconferencebyid/:id',async(req,res)=>{
   }
 });
 
-
 // Update conference API
 router.put('/updateConference/:id', async (req, res) => {
   try {
@@ -122,5 +105,24 @@ router.put('/updateConference/:id', async (req, res) => {
   }
 });
 
+// Delete conference API
+router.delete('/deleteConference/:id', async (req, res) => {
+  try {
+    const conferenceId = req.params.id;
+    const deletedConference = await Conference.findByIdAndDelete(conferenceId);
 
-  module.exports=router;
+    if (!deletedConference) {
+      return res.status(404).json({ error: 'Conference not found' });
+    }
+
+    res.status(200).json({ message: 'Conference deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting conference:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+module.exports=router;
+
+
+// Done

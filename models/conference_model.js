@@ -3,6 +3,7 @@ const track=require('./tracks_model')
 
 //create schema
 const conference=new mongoose.Schema({
+    
     conference_title:{
         type:String,
         required:true
@@ -67,7 +68,11 @@ const conference=new mongoose.Schema({
     committee:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Committee'
-    }]
+    }],
+    subscriberId: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subscriber'
+    }],
 
     
 },
