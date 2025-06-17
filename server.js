@@ -12,7 +12,7 @@ require('dotenv').config();
 app.use(cors({
     origin: function (origin, callback) {
         // Replace this with your own logic to check the origin
-        if (!origin || origin === process.env.FRONTURL || origin === 'https://vercel-frontend9.vercel.app') {
+        if (!origin || origin === process.env.FRONTURL || origin === 'https://vercel-frontend11.vercel.app') {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
