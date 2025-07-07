@@ -327,14 +327,14 @@ router.get('/getpaperlist/:conid', async (req, res) => {
         
             const temp = {
                 _id: element._id,
-                track_name: element.track.track_name,
-                paper_title: element.title,
-                author_name: element.name,
-                pdf: element.pdfLink,
-                coauthor_name: coauthorNames, // No extra comma at the end
-                affiliation: element.affiliation,
-                abstract: element.abstract,
-                keywords: element.keywords
+                track_name: element.track.track_name ===null ? 'N/A' : element.track.track_name, // Handle null track_name
+                paper_title: element.title === null ? 'N/A' : element.title, // Handle null title
+                author_name: element.name === null ? 'N/A' : element.name, // Handle null author name
+                pdf: element.pdfLink === null ? 'N/A' : element.pdfLink, // Handle null pdfLink
+                coauthor_name: coauthorNames === null ? 'N/A' : coauthorNames, // Handle null coauthorNames
+                affiliation: element.affiliation === null ? 'N/A' : element.affiliation, // Handle null affiliation
+                abstract: element.abstract === null ? 'N/A' : element.abstract, // Handle null abstract
+                keywords: element.keywords === null ? 'N/A' : element.keywords // Handle null keywords
             };
         
             data.push(temp);
