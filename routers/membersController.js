@@ -116,10 +116,10 @@ router.get('/getmembersbycomid/:comid', async (req, res) => {
   }
 });
 
-router.get('/allmembersexcurr/:id', async (req, res) => {
+router.get('/allmembersbyconid/:id', async (req, res) => {
   try {
       const conid = req.params.id;
-      const conferences = await Conference.find({ _id: { $ne: conid } })
+      const conferences = await Conference.find(conid)
       .populate({
           path: 'committee',
           populate: {
