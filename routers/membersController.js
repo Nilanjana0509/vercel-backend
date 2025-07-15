@@ -119,16 +119,14 @@ router.get('/getmembersbycomid/:comid', async (req, res) => {
 router.get('/allmembersbyconid/:id', async (req, res) => {
   try {
       const conid = req.params.id;
-      const conferences = await Conference.findById(conid)
-      .populate({
+      const conferences = await Conference.findById(conid).populate({
           path: 'committee',
           populate: {
               path: 'members'
           }
       });
       
-      
-      if (conferences.length > 0) { // Check if conferences array is not empty
+      if (conferences) { // Check if conferences array is not empty
           let allmembers = [];
           const allmembersSet = new Set();
           // Iterate through each conference
