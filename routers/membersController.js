@@ -130,12 +130,9 @@ router.get('/allmembersbyconid/:id', async (req, res) => {
           let allmembers = [];
           const allmembersSet = new Set();
           // Iterate through each conference
-          conferences.forEach(conference => {
+          conferences.committee.forEach(com => {
               // Iterate through each track in the conference
-              conference.committee.forEach(com => {
-                  // Add reviewers from each track to the allReviewers array
-                  com.members.forEach(member => allmembersSet.add(member));
-              });
+              com.members.forEach(member => allmembersSet.add(member));
           });
           // Send the array of reviewers as the response
           allmembers=Array.from(allmembersSet);
