@@ -116,10 +116,10 @@ router.get('/getmembersbycomid/:comid', async (req, res) => {
   }
 });
 
-router.get('/allmembersbyconid/:id', async (req, res) => {
+router.get('/allmembersexcurr/:id', async (req, res) => {
   try {
       const conid = req.params.id;
-      const conferences = await Conference.findById(conid).populate({
+      const conferences = await Conference.findById({ _id: { $ne: conid } }).populate({
           path: 'committee',
           populate: {
               path: 'members'
@@ -129,10 +129,13 @@ router.get('/allmembersbyconid/:id', async (req, res) => {
       if (conferences) { // Check if conferences array is not empty
           let allmembers = [];
           const allmembersSet = new Set();
-          // Iterate through each conference
-          conferences.committee.forEach(com => {
-              // Iterate through each track in the conference
-              com.members.forEach(member => allmembersSet.add(member));
+        
+          conferences.forEach(conference => {
+                // Iterate through each track in the conference
+              conference.committee.forEach(com => {
+                    // Add members from each track to the allMembers array
+                  com.members.forEach(member => allmembersSet.add(member));
+              });
           });
           // Send the array of reviewers as the response
           allmembers=Array.from(allmembersSet);
