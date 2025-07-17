@@ -149,4 +149,32 @@ router.get('/allmembersexcurr/:id', async (req, res) => {
   }
 });
 
+router.get('/allmembersbyconid/:id', async (req, res) => {
+    try {
+        const conid = req.params.id;
+        const conference = await Conference.findById(conid).populate({
+            path: 'committee',
+            populate: {
+                path: 'members'
+            }
+        });
+
+        if (conference) { // Check if conference is found
+            let allmembers = [];
+            // Iterate through each track in the conference
+            conference.committee.forEach(com => {
+                // Add reviewers from each track to the allReviewers array
+                allmembers.push(...com.members);
+            });
+            // Send the array of reviewers as the response
+            res.json(allmembers);
+        } else {
+            res.status(404).json({ error: 'Conference not found' });
+        }
+    } catch (error) {
+        console.error("Error fetching conference:", error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 module.exports=router;
