@@ -119,7 +119,7 @@ router.get('/getmembersbycomid/:comid', async (req, res) => {
 router.get('/allmembersexcurr/:id', async (req, res) => {
   try {
       const conid = req.params.id;
-      const conferences = await Conference.findById({ _id: { $ne: conid } }).populate({
+      const conferences = await Conference.find({ _id: { $ne: conid } }).populate({
           path: 'committee',
           populate: {
               path: 'members'
