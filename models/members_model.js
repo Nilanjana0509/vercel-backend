@@ -22,8 +22,7 @@ const memberSchema = new mongoose.Schema({
         type: String
     },
     mobile: {
-        type: String,
-        required: true
+        type: String
     },
     role: {
         type: String,
