@@ -9,7 +9,7 @@ const AuthorWork = require('../models/authors_work_model');
 const Topic=require('../models/topics_model');
 const Track = require('../models/tracks_model');
 const transporter = nodemailer.createTransport({
-    service: 'yahoo',  // Example using Gmail; configure according to your provider
+    service: 'gmail',  // Example using Gmail; configure according to your provider
     auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSWORD
