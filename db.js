@@ -3,7 +3,7 @@ require('dotenv').config();
 //const dburl='mongodb://localhost:27017/conference_management_system';
 
 // const dburl='mongodb+srv://ghoruipratanu:zdk0HiTR6lf42ZmF@conferencemanagementsys.m2uokxu.mongodb.net/';
-const dburl='mongodb+srv://royswapnil1997:gax84rfwehMHuYZW@cluster0.mouglj7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const dburl='mongodb+srv://chaudhurin18:ilD6q0QyjX8NYTmy@cluster0.mouglj7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const mongodbUrl=dburl;
 mongoose.connect(mongodbUrl);
 const db=mongoose.connection;
