@@ -79,41 +79,22 @@ router.post('/sendMails/:trackId', async (req, res) => {
     if (!track) {
         return res.status(404).json({ message: 'track not found' });
     }
-    const emailsSent = await Promise.all(track.author_works.map(async (author_work) => {
-        // const acceptLinks = author_works.reviewers.map(reviewer => {
-        //     return `https://mellow-gnome-9a4d4c.netlify.app/review-paper2?reviewerId=${reviewer._id}&authorWorkId=${author_works._id}`;
-        // });
-
-        // const rejectLinks = author_work.reviewers.map(reviewer => {
-        //     return `http://example.com/reject?reviewerId=${reviewer._id}&authorWorkId=${author_work._id}`;
-        // });
-        // res.send(acceptLinks+acceptLinks);
-        author_work.reviewers.forEach(element => {
+    const emailsSent = await Promise.all(
+        track.author_works.flatMap((author_work) =>
+            author_work.reviewers.map((reviewer) => {
+                const link = `https://cms-alpha-sand.vercel.app/review-format?reviewerId=${reviewer._id}&authorWorkId=${author_work._id}`;
+                const rejectlink = `http://example.com/reject?reviewerId=${reviewer._id}&authorWorkId=${author_work._id}`;
             
-           const link=`https://cms-alpha-sand.vercel.app/review-format?reviewerId=${element._id}&authorWorkId=${author_work._id}`;
-          const rejectlink=`http://example.com/reject?reviewerId=${element._id}&authorWorkId=${author_work._id}`;
-           const mailOptions = {
-            from: process.env.EMAIL,
-            to: element.email,  // Send to all reviewers
-            subject: `Request to review the following paper: ${author_work.title}`,
-            text: `Title: ${author_work.title} \n Paper ID: ${author_work._id} \n Author: ${author_work.name} \n Last date of review: ${date} \n Abstract: ${author_work.abstract}.\n\nDear Reviewer,\n\nThank you for your willingness to serve as a reviewer. Peer review is one of the most important activities of our Society, and your help is appreciated. Written comments are usually the most helpful part of a review. Please provide comments on the second page or on separate sheets. The grading section below is intended to help identify key points for written comments, and also to allow comparisons among different reviewers. A good paper should have a high overall score, but does not have to score well in all aspects to be acceptable. For example, a concise, critical review paper is a valuable publication, although it might have little intrinsic originality. A paper that introduces important new concepts might be valuable even with limited experimental work.\n\nAccept Review: ${link}\nReject Review: ${rejectlink}\n\nBest regards,\nsend by: ${name}`,
-            //text:'hlwo'
-        };
-        return transporter.sendMail(mailOptions);
-        //    console.log(link);
-        });
-        
-        //res.send("ff");
-
-        // const mailOptions = {
-        //     from: process.env.EMAIL,
-        //     to: author_work.reviewers.map(reviewer => reviewer.email).join(','),  // Send to all reviewers
-        //     subject: `Request to review the following paper: ${author_work.title}`,
-        //     text: `Title: ${author_work.title} \n Paper ID: ${author_work._id} \n Author: ${author_work.name} \n Last date of review: ${date} \n Abstract: ${author_work.abstract}.\n\nMessage:\n\nThank you for your willingness to serve as a reviewer. Peer review is one of the most important activities of our Society, and your help is appreciated. Written comments are usually the most helpful part of a review. Please provide comments on the second page or on separate sheets. The grading section below is intended to help identify key points for written comments, and also to allow comparisons among different reviewers. A good paper should have a high overall score, but does not have to score well in all aspects to be acceptable. For example, a concise, critical review paper is a valuable publication, although it might have little intrinsic originality. A paper that introduces important new concepts might be valuable even with limited experimental work.\n\nAccept Review: ${acceptLinks.join('\n')}\nReject Review: ${rejectLinks.join('\n')}\n\nBest regards,\nYour Organization\nsend by: ${name}\ndesignation: ${designation}`,
-        // };
-
-        // return transporter.sendMail(mailOptions);
-    }));
+                const mailOptions = {
+                    from: process.env.EMAIL,
+                    to: reviewer.email,
+                    subject: `Request to review the following paper: ${author_work.title}`,
+                    text: `Title: ${author_work.title} \n Paper ID: ${author_work._id} \n Author: ${author_work.name} \n Last date of review: ${date} \n Abstract: ${author_work.abstract}.\n\nDear Reviewer,\n\nThank you for your willingness to serve as a reviewer. ...\n\nAccept Review: ${link}\nReject Review: ${rejectlink}\n\nBest regards,\nsend by: ${name}`,
+                };
+                return transporter.sendMail(mailOptions);
+            })
+        )
+    );
 
     res.status(200).json({
         message: 'Emails successfully sent to all reviewers.',

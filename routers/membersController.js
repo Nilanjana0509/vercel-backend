@@ -119,23 +119,21 @@ router.get('/getmembersbycomid/:comid', async (req, res) => {
 router.get('/allmembersexcurr/:id', async (req, res) => {
   try {
       const conid = req.params.id;
-      const conferences = await Conference.find({ _id: { $ne: conid } })
-      .populate({
+      const conferences = await Conference.find({ _id: { $ne: conid } }).populate({
           path: 'committee',
           populate: {
               path: 'members'
           }
       });
       
-      
-      if (conferences.length > 0) { // Check if conferences array is not empty
+      if (conferences) { // Check if conferences array is not empty
           let allmembers = [];
           const allmembersSet = new Set();
-          // Iterate through each conference
+        
           conferences.forEach(conference => {
-              // Iterate through each track in the conference
+                // Iterate through each track in the conference
               conference.committee.forEach(com => {
-                  // Add reviewers from each track to the allReviewers array
+                    // Add members from each track to the allMembers array
                   com.members.forEach(member => allmembersSet.add(member));
               });
           });
@@ -149,6 +147,34 @@ router.get('/allmembersexcurr/:id', async (req, res) => {
       console.error("Error fetching conferences:", error);
       res.status(500).json({ error: 'Internal server error' });
   }
+});
+
+router.get('/allmembersbyconid/:id', async (req, res) => {
+    try {
+        const conid = req.params.id;
+        const conference = await Conference.findById(conid).populate({
+            path: 'committee',
+            populate: {
+                path: 'members'
+            }
+        });
+
+        if (conference) { // Check if conference is found
+            let allmembers = [];
+            // Iterate through each track in the conference
+            conference.committee.forEach(com => {
+                // Add reviewers from each track to the allReviewers array
+                allmembers.push(...com.members);
+            });
+            // Send the array of reviewers as the response
+            res.json(allmembers);
+        } else {
+            res.status(404).json({ error: 'Conference not found' });
+        }
+    } catch (error) {
+        console.error("Error fetching conference:", error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 module.exports=router;
