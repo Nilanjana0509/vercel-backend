@@ -1,3 +1,4 @@
+//This Function Validates the email
 const validator = require('email-validator');
 
 const verify=(email)=>{
