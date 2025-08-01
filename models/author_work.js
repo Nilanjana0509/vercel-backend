@@ -1,3 +1,4 @@
+//Mongoose Schema
 const mongoose = require('mongoose');
 
 const paperSchema = new mongoose.Schema({
