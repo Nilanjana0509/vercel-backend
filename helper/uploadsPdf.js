@@ -1,3 +1,4 @@
+//For uploading pdfs to given cloudinary credentials
 require('dotenv').config();
 const cloudinary = require("cloudinary").v2;
           
