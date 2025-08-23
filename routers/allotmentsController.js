@@ -63,7 +63,7 @@ router.post('/allotments', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-router.post('/sendMails/:trackId', async (req, res) => {
+router.post('/sendMails/:trackId', async (req, res) => { //This program sends emails to authors
    try {
     const { trackId } = req.params;
     const {date,name,designation}=req.body;
@@ -140,3 +140,4 @@ router.get('/getpdf/:authorworkId',async(req,res)=>{
 
 
 module.exports=router;
+
