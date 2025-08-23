@@ -34,6 +34,7 @@ const memberSchema = new mongoose.Schema({
     },
 
 });
-
+//create members model
 const mamber = mongoose.model('members', memberSchema);
 module.exports = mamber;
+
