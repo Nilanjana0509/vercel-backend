@@ -36,6 +36,7 @@ const reviewerSchema = new mongoose.Schema({
     }
 
 });
-
+//create reviewers model
 const Reviewer = mongoose.model('Reviewer', reviewerSchema);
 module.exports = Reviewer;
+
