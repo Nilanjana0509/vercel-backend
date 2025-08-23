@@ -1,4 +1,4 @@
-
+//Mongoose Schema model
 const mongoose = require('mongoose');
 
 const paperSchema = new mongoose.Schema({
@@ -65,3 +65,4 @@ const paperSchema = new mongoose.Schema({
 
 const Paper = mongoose.model('Paper', paperSchema);
 module.exports = Paper;
+
